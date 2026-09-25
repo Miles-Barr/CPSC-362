@@ -1,184 +1,244 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* ============================================================================
+   App.css
+   ----------------------------------------------------------------------------
+   Design tokens (defined once, reused everywhere below):
+   --ink       #1F2A28   near-black green-grey, all body text
+   --teal      #16423C   deep clinical teal, primary brand color
+   --teal-deep #0F2E2A   pressed/hover state for teal
+   --sage      #F1F6F3   page background
+   --paper     #FFFFFF   card background
+   --line      #D7E4DE   hairline borders
+   --coral     #C1694F   doctor-record accent (warm, distinct from patient teal)
+   --ok        #2F7A5A   success text
+   --err       #B4443A   error text
+   Typography: a single system sans stack, sized with a small deliberate
+   scale. No serif/sans pairing needed for a form-heavy utility screen.
+   ============================================================================ */
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+:root {
+  --ink: #1f2a28;
+  --teal: #16423c;
+  --teal-deep: #0f2e2a;
+  --sage: #f1f6f3;
+  --paper: #ffffff;
+  --line: #d7e4de;
+  --coral: #c1694f;
+  --ok: #2f7a5a;
+  --err: #b4443a;
+  --font: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+* {
+  box-sizing: border-box;
 }
 
-#center {
+body {
+  margin: 0;
+  background: var(--sage);
+  color: var(--ink);
+  font-family: var(--font);
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+/* ---------------------------------- header --------------------------------- */
+
+.app-header {
+  background: var(--teal);
+  color: var(--sage);
+  padding: 28px 32px 24px;
+  border-bottom: 3px solid var(--teal-deep);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: var(--sage);
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.brand-name {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.brand-tagline {
+  margin: 6px 0 0 40px;
+  font-size: 13.5px;
+  color: #cfe4de;
+}
+
+/* ----------------------------------- main ---------------------------------- */
+
+.app-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  gap: 20px;
 }
 
-#next-steps {
+/* Tab rail: two plain buttons with a bottom rule that shifts color per
+   role, rather than rounded pill buttons — keeps it reading as a record
+   selector, not a generic nav. */
+
+.tab-rail {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+  border-bottom: 1px solid var(--line);
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+.tab-btn {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 10px 18px 12px;
+  margin-bottom: -1px;
+  font-family: var(--font);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #6b7d78;
+  cursor: pointer;
 }
 
-#next-steps ul {
-  list-style: none;
-  padding: 0;
+.tab-btn:hover {
+  color: var(--ink);
+}
+
+.tab-btn.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+}
+
+.tab-btn.doctor.active {
+  color: var(--coral);
+  border-bottom-color: var(--coral);
+}
+
+/* ------------------------------- profile card ------------------------------ */
+
+.profile-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--teal);
+  padding: 28px 28px 24px;
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  flex-direction: column;
+  gap: 16px;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+.profile-card:has(.profile-kicker.doctor) {
+  border-top-color: var(--coral);
 }
 
-.ticks {
-  position: relative;
-  width: 100%;
+.profile-card-header h2 {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 600;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+.profile-kicker {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal);
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+.profile-kicker.doctor {
+  color: var(--coral);
+}
+
+/* ----------------------------------- field ---------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a5a56;
+}
+
+.field-input {
+  font-family: var(--font);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--sage);
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+}
+
+.field-input:focus {
+  outline: 2px solid var(--teal);
+  outline-offset: 1px;
+}
+
+/* ------------------------------------ submit --------------------------------- */
+
+.submit-btn {
+  align-self: flex-start;
+  appearance: none;
+  border: none;
+  background: var(--teal);
+  color: var(--sage);
+  font-family: var(--font);
+  font-size: 14.5px;
+  font-weight: 600;
+  padding: 11px 22px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: var(--teal-deep);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.status {
+  font-size: 13.5px;
+  margin: 0;
+}
+
+.status-ok {
+  color: var(--ok);
+}
+
+.status-error {
+  color: var(--err);
+}
+
+/* ---------------------------------- responsive -------------------------------- */
+
+@media (max-width: 520px) {
+  .app-header {
+    padding: 22px 18px 18px;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+  .app-main {
+    padding: 24px 14px 60px;
+  }
+  .profile-card {
+    padding: 20px 18px 18px;
   }
 }
