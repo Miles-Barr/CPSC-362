@@ -30,12 +30,41 @@ export default function App() {
   return (
     <div>
       <h1>Sign in</h1>
+
       {/*when patient button is clicked, role is changed to patient
       //the "=>" helps hand over the function when it is clicked 
       //it only stores the information and activates it when it's clicked*/}
-      <button onClick={() => setSelectedRole("patient")}>Patient</button>
-      <button onClick={() => setSelectedRole("doctor")}>Doctor</button>
-      <button onClick={() => setSelectedRole("staff")}>Staff</button>
+      {/* className selectedRole checks when each role is active */}
+
+      <button 
+        className={selectedRole === "patient" ? "role-btn active" : "role-btn"}
+        onClick={() => setSelectedRole("patient")}
+        >
+          Patient
+        </button>
+
+      <button 
+
+        className={selectedRole === "doctor" ? "role-btn active" : "role-btn"}
+        onClick={() => setSelectedRole("doctor")}>
+          Doctor
+        </button>
+
+      <button 
+        className={selectedRole === "staff" ? "role-btn active" : "role-btn"}
+      
+        onClick={() => setSelectedRole("staff")}>
+          Staff
+        </button>
+
+      {/* testing that selectedRole is working */}
+      <p> {selectedRole} </p>
+
+      {/* creating inputs that will eventually be teh passwrd and email */}
+      <input>
+        value={someState}
+        onChange={(e) => someSetter(e.target.value)}
+      </input>
 
     </div>
       
