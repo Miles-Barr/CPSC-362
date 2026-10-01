@@ -23,12 +23,12 @@ export default function App() {
       //the "=>" helps hand over the function when it is clicked 
       //it only stores the information and activates it when it's clicked*/}
       {/* className selectedRole checks when each role is active */}
-      
+      <div>
 
       <button 
         className={selectedRole === "patient" ? "role-btn active" : "role-btn"}
         onClick={() => setSelectedRole("patient")}
-      <div>
+      
         <button
           type="button"
           className={selectedRole === "patient" ? "role-btn active" : "role-btn"}
