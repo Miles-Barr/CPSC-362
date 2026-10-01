@@ -1,0 +1,261 @@
+;!function(){try { var e="undefined"!=typeof globalThis?globalThis:"undefined"!=typeof global?global:"undefined"!=typeof window?window:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&((e._debugIds|| (e._debugIds={}))[n]="0329bfd3-b24d-796f-1ea0-6c54ae1365c5")}catch(e){}}();
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,12214,e=>{"use strict";var r=e.i(531837),t=e.i(615515);let n=r.object({index:r.number(),columns:r.array(r.object({name:r.string(),type:r.string()})),is_new_schema:r.boolean(),schema:r.string(),schema_name:r.string(),table_name:r.string(),object:r.any().optional()}).passthrough(),a=e=>Object.fromEntries(e.map(e=>e.split("=")));function i(e,r){if("wasm_fdw_handler"===e.handlerName){let t=a(r?.server_options??[]);return e.server.options.find(e=>"fdw_package_name"===e.name)?.defaultValue===t.fdw_package_name}return e.handlerName===r?.handler}e.s(["NewTable",0,{},"convertKVStringArrayToJson",0,a,"formatWrapperTables",0,(e,r)=>(e?.tables??[]).map(n=>{let a=0,i=Object.fromEntries(n.options.map(e=>e.split("=")));switch(e.handler){case t.WRAPPER_HANDLERS.STRIPE:a=r?.tables.findIndex(e=>e.options.find(e=>"object"===e.name)?.defaultValue===i.object)??0;break;case t.WRAPPER_HANDLERS.FIREBASE:a="auth/users"===i.object?r?.tables.findIndex(e=>e.options.find(e=>"auth/users"===e.defaultValue))??0:r?.tables.findIndex(e=>"Firestore Collection"===e.label)??0;case t.WRAPPER_HANDLERS.S3:case t.WRAPPER_HANDLERS.AIRTABLE:case t.WRAPPER_HANDLERS.LOGFLARE:case t.WRAPPER_HANDLERS.BIG_QUERY:case t.WRAPPER_HANDLERS.CLICK_HOUSE:}return{...i,index:a,id:n.id,columns:n.columns??[],is_new_schema:!1,schema:n.schema,schema_name:n.schema,table_name:n.name}}),"getEditionFormSchema",0,e=>{let t={wrapper_name:r.string().min(1,"Please provide a name for your wrapper"),tables:r.array(n,{required_error:"Please provide at least one table"}).min(1,"Please provide at least one table")};return e.server.options.forEach(e=>{if(e.required){t[e.name]=r.string().min(1,"Required");return}t[e.name]=r.string().optional()}),r.object(t)},"getRequiredExtensionsToInstall",0,function(e,r){return void 0===e?null:e.filter(e=>r.includes(e.name)&&!e.installed_version)},"getTableFormSchema",0,e=>{let t={table_name:r.string().min(1,"Required"),schema:r.string().min(1,"Required"),schema_name:r.string().optional(),columns:r.array(r.object({name:r.string().min(1,"Required"),type:r.string().min(1,"Required")}))};return e.options.forEach(e=>{if(e.required){t[e.name]=r.string().min(1,"Required");return}t[e.name]=r.string().optional()}),r.object(t).passthrough().superRefine((e,r)=>{"custom"!==e.schema||e.schema_name||r.addIssue({code:"custom",path:["schema_name"],message:"Required"})})},"getWrapperCreationFormSchema",0,e=>{let t={wrapper_name:r.string().min(1,"Please provide a name for your wrapper")};return e.server.options.forEach(e=>{if(e.required){t[e.name]=r.string().min(1,"Required");return}t[e.name]=r.string().optional()}),r.discriminatedUnion("mode",[r.object({mode:r.literal("tables"),tables:r.array(n,{required_error:"Please provide at least one table"}).min(1,"Please provide at least one table")}).merge(r.object(t)),r.object({mode:r.literal("schema"),source_schema:r.string().min(1,"Please provide a source schema"),target_schema:r.string().min(1,"Please provide an unique target schema")}).merge(r.object(t))])},"getWrapperMetaForWrapper",0,function(e){return t.WRAPPERS.find(r=>i(r,e))},"hasForeignSchemaSupport",0,function(e){return!!e?.installed_version&&e.installed_version>="0.5.0"},"wrapperMetaComparator",0,i])},108892,348682,e=>{"use strict";var r=e.i(125356),t=e.i(416340);let n={list:(e,r)=>["projects",e,"api-keys",r].filter(Boolean),single:(e,r)=>["projects",e,"api-keys",r],status:e=>["projects",e,"api-keys","legacy"],temporary:e=>["projects",e,"api-keys","temporary"]};e.s(["apiKeysKeys",0,n],348682);var a=e.i(234745);async function i({projectRef:e,reveal:r},t){if(!e)throw Error("projectRef is required");let{data:n,error:s}=await (0,a.get)("/v1/projects/{ref}/api-keys",{params:{path:{ref:e},query:{reveal:r?"true":"false"}},signal:t});return s&&(0,a.handleError)(s),n}let s=({projectRef:e,reveal:t=!1},{enabled:a=!0,...s}={})=>(0,r.useQuery)({queryKey:n.list(e,t),queryFn:({signal:r})=>i({projectRef:e,reveal:t},r),enabled:a&&void 0!==e,...s}),o={anonKey:void 0,serviceKey:void 0,publishableKey:void 0,secretKey:void 0,allSecretKeys:[]},l=(e=[])=>{if(!Array.isArray(e))return o;let r=e.find(e=>"anon"===e.name),t=e.find(e=>"service_role"===e.name),n=e.find(e=>"publishable"===e.type);return{anonKey:r,serviceKey:t,publishableKey:n,secretKey:e.find(e=>"secret"===e.type),allSecretKeys:e.filter(e=>"secret"===e.type)}},p=[];e.s(["getKeys",0,l,"useAPIKeys",0,(e,r={})=>{let n=(0,t.useCallback)(e=>l(r.enabled?e:[]),[r.enabled]);return s(e,{...r,placeholderData:p,select:n})},"useAPIKeysQuery",0,s],108892)},78162,e=>{"use strict";e.s(["configKeys",0,{settings:e=>["projects",e,"settings"],settingsV2:e=>["projects",e,"settings-v2"],api:e=>["projects",e,"settings","api"],postgrest:e=>["projects",e,"postgrest"],jwtSecretUpdatingStatus:e=>["projects",e,"jwt-secret-updating-status"],storage:e=>["projects",e,"storage"],upgradeEligibility:e=>["projects",e,"upgrade-eligibility"],upgradeStatus:e=>["projects",e,"upgrade-status"],diskAttributes:e=>["projects",e,"disk-attributes"],diskBreakdown:e=>["projects",e,"disk-breakdown"],diskUtilization:e=>["projects",e,"disk-utilization"],projectCreationPostgresVersions:(e,r,t)=>["projects",e,r,t,"available-creation-versions"],projectUnpausePostgresVersions:e=>["projects",e,"available-unpause-versions"],diskAutoscaleConfig:e=>["projects",e,"disk-autoscale-config"],deploymentMode:()=>["deployment-mode"],postgresConfig:e=>["projects",e,"postgres-config"],projectConfig:e=>["projects",e,"config"]}])},298625,33942,584258,e=>{"use strict";e.i(850036);var r=e.i(479084);let t=()=>r.safeSql`
+    select
+      s.oid as "id",
+      w.fdwname as "name",
+      s.srvname as "server_name",
+      s.srvoptions as "server_options",
+      c.proname as "handler",
+      (
+        select jsonb_agg(
+          jsonb_build_object(
+            'id', c.oid::bigint,
+            'schema', relnamespace::regnamespace::text,
+            'name', c.relname,
+            'columns', (
+              select jsonb_agg(
+                jsonb_build_object(
+                  'name', a.attname,
+                  'type', pg_catalog.format_type(a.atttypid, a.atttypmod)
+                )
+              )
+              from pg_catalog.pg_attribute a
+              where a.attrelid = c.oid and a.attnum > 0 and not a.attisdropped
+            ),
+            'options', t.ftoptions
+          )
+        )
+        from pg_catalog.pg_class c
+        join pg_catalog.pg_foreign_table t on c.oid = t.ftrelid
+        where c.oid = any (select t.ftrelid from pg_catalog.pg_foreign_table t where t.ftserver = s.oid)
+      ) as "tables"
+    from pg_catalog.pg_foreign_server s
+    join pg_catalog.pg_foreign_data_wrapper w on s.srvfdw = w.oid
+    join pg_catalog.pg_proc c on w.fdwhandler = c.oid;
+  `;function n({wrapperMeta:e,formState:t,mode:a,tables:i,sourceSchema:s,targetSchema:o,schemaOptions:l=[]}){let p=(0,r.joinSqlFragments)(i.filter(e=>e.is_new_schema).map(e=>r.safeSql`create schema if not exists ${(0,r.ident)(e.schema_name)};`),"\n"),u=r.safeSql`
+    create foreign data wrapper ${(0,r.ident)(t.wrapper_name)}
+    handler ${(0,r.ident)(e.handlerName)}
+    validator ${(0,r.ident)(e.validatorName)};
+  `,c=e.server.options.filter(e=>e.encrypted),d=e.server.options.filter(e=>!e.encrypted),f=c.map(e=>{let n=`${t.wrapper_name}_${e.name}`,a=(0,r.literal)(t[e.name]||"");return r.safeSql`
+      do $$
+      begin
+        -- Old wrappers has an implicit dependency on pgsodium. For new wrappers
+        -- we use Vault directly.
+        if (select extversion from pg_extension where extname = 'wrappers') in (
+          '0.1.0',
+          '0.1.1',
+          '0.1.4',
+          '0.1.5',
+          '0.1.6',
+          '0.1.7',
+          '0.1.8',
+          '0.1.9',
+          '0.1.10',
+          '0.1.11',
+          '0.1.12',
+          '0.1.14',
+          '0.1.15',
+          '0.1.16',
+          '0.1.17',
+          '0.1.18',
+          '0.1.19',
+          '0.2.0',
+          '0.3.0',
+          '0.3.1',
+          '0.4.0',
+          '0.4.1',
+          '0.4.2',
+          '0.4.3',
+          '0.4.4',
+          '0.4.5'
+        ) then
+          create extension if not exists pgsodium;
+
+          perform pgsodium.create_key(
+            name := ${(0,r.literal)(n)}
+          );
+
+          perform vault.create_secret(
+            new_secret := ${a},
+            new_name   := ${(0,r.literal)(n)},
+            new_key_id := (select id from pgsodium.valid_key where name = ${(0,r.literal)(n)})
+          );
+        else
+          perform vault.create_secret(
+            new_secret := ${a},
+            new_name := ${(0,r.literal)(n)}
+          );
+        end if;
+      end $$;
+    `}),m=(0,r.joinSqlFragments)(f,"\n"),g=c.filter(e=>t[e.name]).map(e=>r.safeSql`${(0,r.ident)(e.name)} ''%s''`),_=d.filter(e=>t[e.name]),y=_.map(e=>r.safeSql`${(0,r.ident)(e.name)} %L`),h=(0,r.joinSqlFragments)([...g,...y],","),v=r.safeSql`
+    do $$
+    declare
+      -- Old wrappers has an implicit dependency on pgsodium. For new wrappers
+      -- we use Vault directly.
+      is_using_old_wrappers bool;
+      ${(0,r.joinSqlFragments)(c.map(e=>r.safeSql`${(0,r.ident)(`v_${e.name}`)} text;`),"\n")}
+    begin
+      is_using_old_wrappers := (select extversion from pg_extension where extname = 'wrappers') in (
+        '0.1.0',
+        '0.1.1',
+        '0.1.4',
+        '0.1.5',
+        '0.1.6',
+        '0.1.7',
+        '0.1.8',
+        '0.1.9',
+        '0.1.10',
+        '0.1.11',
+        '0.1.12',
+        '0.1.14',
+        '0.1.15',
+        '0.1.16',
+        '0.1.17',
+        '0.1.18',
+        '0.1.19',
+        '0.2.0',
+        '0.3.0',
+        '0.3.1',
+        '0.4.0',
+        '0.4.1',
+        '0.4.2',
+        '0.4.3',
+        '0.4.4',
+        '0.4.5'
+      );
+      ${(0,r.joinSqlFragments)(c.map(e=>r.safeSql`
+              if is_using_old_wrappers then
+                select id into ${(0,r.ident)(`v_${e.name}`)} from pgsodium.valid_key where name = ${(0,r.literal)(`${t.wrapper_name}_${e.name}`)} limit 1;
+              else
+                select id into ${(0,r.ident)(`v_${e.name}`)} from vault.secrets where name = ${(0,r.literal)(`${t.wrapper_name}_${e.name}`)} limit 1;
+              end if;
+            `),"\n")}
+    
+      execute format(
+        E'create server ${(0,r.ident)(t.server_name)} foreign data wrapper ${(0,r.ident)(t.wrapper_name)} options (${h});',
+        ${(0,r.joinSqlFragments)([...c.filter(e=>t[e.name]).map(e=>(0,r.ident)(`v_${e.name}`)),..._.map(e=>(0,r.literal)(t[e.name]))],",")}
+      );
+    end $$;
+  `,w=(0,r.joinSqlFragments)(i.map(e=>{let n=e.columns;return r.safeSql`
+        create foreign table ${(0,r.ident)(e.schema_name)}.${(0,r.ident)(e.table_name)} (
+          ${(0,r.joinSqlFragments)(n.map(e=>r.safeSql`${(0,r.ident)(e.name)} ${(0,r.keyword)(e.type)}`),",")}
+        )
+        server ${(0,r.ident)(t.server_name)}
+        options (
+          ${(0,r.joinSqlFragments)(Object.entries(e).filter(([e,r])=>"table_name"!==e&&"schema_name"!==e&&"schema"!==e&&"id"!==e&&"columns"!==e&&"index"!==e&&"is_new_schema"!==e&&!!r).map(([e,t])=>r.safeSql`${(0,r.ident)(e)} ${(0,r.literal)(t)}`),",")}
+        );
+      `}),"\n\n"),S=(0,r.joinSqlFragments)([...l,r.safeSql`strict 'true'`],", ");return r.safeSql`
+    ${p}
+
+    ${u}
+
+    ${m}
+
+    ${v}
+
+    ${"tables"===a?w:r.safeSql``}
+
+    ${"schema"===a?r.safeSql`
+  import foreign schema ${(0,r.ident)(s)} from server ${(0,r.ident)(t.server_name)} into ${(0,r.ident)(o)} options (${S});
+`:r.safeSql``}
+  `}let a=({wrapper:e,wrapperMeta:t})=>{let n=t.server.options.filter(e=>e.encrypted).map(t=>{let n=`${e.name}_${t.name}`;return r.safeSql`
+      do $$
+      begin
+        if not exists (
+          select 1 from pg_catalog.pg_foreign_data_wrapper where fdwname = ${(0,r.literal)(e.name)}
+        ) then
+          -- Old wrappers has an implicit dependency on pgsodium. For new wrappers
+          -- we use Vault directly.
+          if (select extversion from pg_extension where extname = 'wrappers') in (
+            '0.1.0',
+            '0.1.1',
+            '0.1.4',
+            '0.1.5',
+            '0.1.6',
+            '0.1.7',
+            '0.1.8',
+            '0.1.9',
+            '0.1.10',
+            '0.1.11',
+            '0.1.12',
+            '0.1.14',
+            '0.1.15',
+            '0.1.16',
+            '0.1.17',
+            '0.1.18',
+            '0.1.19',
+            '0.2.0',
+            '0.3.0',
+            '0.3.1',
+            '0.4.0',
+            '0.4.1',
+            '0.4.2',
+            '0.4.3',
+            '0.4.4',
+            '0.4.5'
+          ) then
+            delete from vault.secrets where key_id = (select id from pgsodium.valid_key where name = ${(0,r.literal)(n)});
+
+            delete from pgsodium.key where name = ${(0,r.literal)(n)};
+          else
+            delete from vault.secrets where name = ${(0,r.literal)(n)};
+          end if;
+        end if;
+      end $$;
+    `}),a=(0,r.joinSqlFragments)(n,"\n"),i=r.safeSql`
+    begin
+      if not exists (
+        select 1
+        from pg_catalog.pg_foreign_server s
+        join pg_catalog.pg_foreign_data_wrapper w on w.oid = s.srvfdw
+        where s.oid = ${(0,r.literal)(e.id)}
+          and s.srvname = ${(0,r.literal)(e.server_name)}
+          and w.fdwname = ${(0,r.literal)(e.name)}
+      ) then
+        raise exception 'The selected foreign server no longer belongs to this wrapper.';
+      end if;
+    end
+  `;return r.safeSql`
+    do ${(0,r.literal)(i)};
+
+    drop server if exists ${(0,r.ident)(e.server_name)} cascade;
+
+    do $$
+    begin
+      if not exists (
+        select 1
+        from pg_catalog.pg_foreign_server s
+        join pg_catalog.pg_foreign_data_wrapper w on w.oid = s.srvfdw
+        where w.fdwname = ${(0,r.literal)(e.name)}
+      ) then
+        execute format('drop foreign data wrapper if exists %I cascade', ${(0,r.literal)(e.name)});
+      end if;
+    end $$;
+
+    ${a}
+  `};e.s(["getCreateFDWSql",0,n,"getDeleteFDWSql",0,a,"getDropForeignTableSql",0,function({schema:e,table:t}){return r.safeSql`
+drop foreign table if exists ${(0,r.ident)(e)}.${(0,r.ident)(t)};
+`},"getFDWsSql",0,t,"getImportForeignSchemaSql",0,function({serverName:e,sourceSchema:t,targetSchema:n,schemaOptions:a=[]}){let i=(0,r.joinSqlFragments)([...a,r.safeSql`strict 'true'`],", ");return r.safeSql`
+  import foreign schema ${(0,r.ident)(t)} from server ${(0,r.ident)(e)} into ${(0,r.ident)(n)} options (${i});
+`},"getUpdateFDWSql",0,({wrapper:e,wrapperMeta:t,formState:i,tables:s})=>{let o=r.safeSql`
+    do $$
+    begin
+      if exists (
+        select 1
+        from pg_catalog.pg_foreign_server s
+        join pg_catalog.pg_foreign_data_wrapper w on w.oid = s.srvfdw
+        where w.fdwname = ${(0,r.literal)(e.name)}
+          and s.srvname <> ${(0,r.literal)(e.server_name)}
+      ) then
+        raise exception 'This wrapper is used by another server and cannot be edited here.';
+      end if;
+    end $$;
+  `,l=a({wrapper:e,wrapperMeta:t}),p=n({wrapperMeta:t,formState:i,tables:s,mode:"tables",sourceSchema:"",targetSchema:""});return r.safeSql`
+    ${o}
+
+    ${l}
+
+    ${p}
+  `}],33942);var i=e.i(125356);let s={list:e=>["projects",e,"fdws"]};e.s(["fdwKeys",0,s],584258);var o=e.i(617361),l=e.i(681328);async function p({projectRef:e,connectionString:r},n){let a=t(),{result:i}=await (0,o.executeSql)({projectRef:e,connectionString:r,sql:a,queryKey:["fdws"]},n);return Array.isArray(i)?i:l.EMPTY_ARR}e.s(["getFDWs",0,p,"useFDWsQuery",0,({projectRef:e,connectionString:r},{enabled:t=!0,...n}={})=>(0,i.useQuery)({queryKey:s.list(e),queryFn:({signal:t})=>p({projectRef:e,connectionString:r},t),enabled:t&&void 0!==e,...n})],298625)},2579,e=>{"use strict";e.i(128328);var r=e.i(704206),t=e.i(158639),n=e.i(793365),a=e.i(416340),i=e.i(265735),s=e.i(635494),o=e.i(154985),l=e.i(10429);let p=e=>e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),u=new Map,c=e=>{let r=u.get(e);if(!r){let t=e.split("%").map(p).join(".*");r=RegExp(`^${t}$`),u.set(e,r)}return r};function d(e,r){return!e.filter(e=>e.restrictive).some(({condition:e})=>null===e||n.default.apply(e,r))&&e.filter(e=>!e.restrictive).some(({condition:e})=>null===e||n.default.apply(e,r))}function f(e,r,t,n,a,i){if(!e||!Array.isArray(e))return!1;if(i){let s=e.filter(e=>e.organization_slug===a&&e.actions.some(e=>r?c(e).test(r):null)&&e.resources.some(e=>c(e).test(t))&&e.project_refs?.includes(i));if(s.length>0)return d(s,{resource_name:t,...n})}return d(e.filter(e=>!e.project_refs||0===e.project_refs.length).filter(e=>e.organization_slug===a&&e.actions.some(e=>r?c(e).test(r):null)&&e.resources.some(e=>c(e).test(t))),{resource_name:t,...n})}function m(e,r,n,a=!0){let{data:l,isPending:p,isSuccess:u}=(0,o.usePermissionsQuery)({enabled:void 0===e&&a}),c=void 0===r&&a,{data:d,isPending:f,isSuccess:g}=(0,i.useSelectedOrganizationQuery)({enabled:c}),_=(void 0===r?d:{slug:r})?.slug,{ref:y}=(0,t.useParams)(),h=!!y&&void 0===n&&a,{data:v,isPending:w,isSuccess:S}=(0,s.useSelectedProjectQuery)({enabled:h}),b=void 0===n||v?.parent_project_ref?v:{ref:n,parent_project_ref:void 0},$=null===n?null:b?.parent_project_ref?b.parent_project_ref:b?.ref;return{permissions:void 0===e?l:e,organizationSlug:_,projectRef:$,isLoading:p||c&&f||h&&w,isSuccess:u&&(!c||g)&&(!h||S)}}e.s(["doPermissionsCheck",0,f,"useAsyncCheckPermissions",0,function(e,t,n,i){let s=(0,r.useIsLoggedIn)(),{organizationSlug:o,projectRef:p,permissions:u}=i??{},{permissions:c,organizationSlug:d,projectRef:g,isLoading:_,isSuccess:y}=m(u,o,p,s),h=(0,a.useMemo)(()=>!l.IS_PLATFORM||!!s&&!!y&&!!c&&f(c,e,t,n,d,g),[s,y,c,e,t,n,d,g]);return{isLoading:!!l.IS_PLATFORM&&(!s||_),isSuccess:!l.IS_PLATFORM||!!s&&y,can:h}},"useGetPermissions",0,function(e,r,t=!0){return m(e,r,void 0,t)}])},392491,e=>{"use strict";e.i(850036);var r=e.i(957386),t=e.i(986261),n=e.i(539256),a=e.i(416340),i=e.i(635494),s=e.i(615515),o=e.i(12214),l=e.i(298625);let p=["auth","cron","etl","extensions","information_schema","net","pgsodium","pgsodium_masks","pgbouncer","pgtle","pgmq","realtime","_realtime","storage","supabase_functions","supabase_migrations","vault","graphql","graphql_public",r.QUEUES_SCHEMA],u=({excludeSchemas:e=[]}={})=>{let r=(0,a.useMemo)(()=>e,[JSON.stringify(e)]),u=(()=>{let{data:e}=(0,i.useSelectedProjectQuery)(),r=(0,l.useFDWsQuery)({projectRef:e?.ref,connectionString:e?.connectionString}),n=(0,a.useMemo)(()=>s.WRAPPERS.filter(e=>e.server.options.some(e=>e.name===s.SUPABASE_TARGET_SCHEMA_OPTION.name)),[]),p=(0,a.useMemo)(()=>(r.data?.filter(e=>n.some(r=>(0,o.wrapperMetaComparator)(r,e)))??[]).map(e=>{let r=(0,o.convertKVStringArrayToJson)(e.server_options??[]).supabase_target_schema??"",n=(0,t.default)(r.split(",").filter(Boolean));return{serverName:e.server_name,type:e.handler.replace("_fdw_handler",""),schemas:n}}),[r.data,n]);return{...r,data:p}})(),c=(0,a.useMemo)(()=>{let e=p.map(e=>({name:e,type:"internal"})),t=u.data?.flatMap(e=>e.schemas.map(r=>({name:r,type:"fdw",fdwType:e.type,serverName:e.serverName})));return(0,n.default)([...e,...t],e=>e.name).filter(e=>!r.includes(e.name))},[u.data,r]);return{...u,data:c}};e.s(["INTERNAL_SCHEMAS",0,p,"useIsProtectedSchema",0,({schema:e,excludedSchemas:r=[]})=>{let{data:t}=u({excludeSchemas:r}),n=t.find(r=>r.name===e);return n?{isSchemaLocked:!0,reason:n.type,fdwType:n.fdwType}:{isSchemaLocked:!1,reason:void 0,fdwType:void 0}},"useProtectedSchemas",0,u])},681328,e=>{"use strict";e.s(["EMPTY_ARR",0,[],"EMPTY_OBJ",0,{},"noop",0,function(){}])},793365,(e,r,t)=>{!function(n,a){if("function"==typeof define&&define.amd){let n;void 0!==(n=a(e.r,t,r))&&e.v(n)}else r.exports=a()}(e.e,function(){"use strict";Array.isArray||(Array.isArray=function(e){return"[object Array]"===Object.prototype.toString.call(e)});var e={},r={"==":function(e,r){return e==r},"===":function(e,r){return e===r},"!=":function(e,r){return e!=r},"!==":function(e,r){return e!==r},">":function(e,r){return e>r},">=":function(e,r){return e>=r},"<":function(e,r,t){return void 0===t?e<r:e<r&&r<t},"<=":function(e,r,t){return void 0===t?e<=r:e<=r&&r<=t},"!!":function(r){return e.truthy(r)},"!":function(r){return!e.truthy(r)},"%":function(e,r){return e%r},log:function(e){return console.log(e),e},in:function(e,r){return!!r&&void 0!==r.indexOf&&-1!==r.indexOf(e)},cat:function(){return Array.prototype.join.call(arguments,"")},substr:function(e,r,t){if(t<0){var n=String(e).substr(r);return n.substr(0,n.length+t)}return String(e).substr(r,t)},"+":function(){return Array.prototype.reduce.call(arguments,function(e,r){return parseFloat(e,10)+parseFloat(r,10)},0)},"*":function(){return Array.prototype.reduce.call(arguments,function(e,r){return parseFloat(e,10)*parseFloat(r,10)})},"-":function(e,r){return void 0===r?-e:e-r},"/":function(e,r){return e/r},min:function(){return Math.min.apply(this,arguments)},max:function(){return Math.max.apply(this,arguments)},merge:function(){return Array.prototype.reduce.call(arguments,function(e,r){return e.concat(r)},[])},var:function(e,r){var t=void 0===r?null:r,n=this;if(void 0===e||""===e||null===e)return n;for(var a=String(e).split("."),i=0;i<a.length;i++)if(null==n||void 0===(n=n[a[i]]))return t;return n},missing:function(){for(var r=[],t=Array.isArray(arguments[0])?arguments[0]:arguments,n=0;n<t.length;n++){var a=t[n],i=e.apply({var:a},this);(null===i||""===i)&&r.push(a)}return r},missing_some:function(r,t){var n=e.apply({missing:t},this);return t.length-n.length>=r?[]:n}};return e.is_logic=function(e){return"object"==typeof e&&null!==e&&!Array.isArray(e)&&1===Object.keys(e).length},e.truthy=function(e){return(!Array.isArray(e)||0!==e.length)&&!!e},e.get_operator=function(e){return Object.keys(e)[0]},e.get_values=function(r){return r[e.get_operator(r)]},e.apply=function(t,n){if(Array.isArray(t))return t.map(function(r){return e.apply(r,n)});if(!e.is_logic(t))return t;var a,i,s,o,l,p=e.get_operator(t),u=t[p];if(Array.isArray(u)||(u=[u]),"if"===p||"?:"==p){for(a=0;a<u.length-1;a+=2)if(e.truthy(e.apply(u[a],n)))return e.apply(u[a+1],n);return u.length===a+1?e.apply(u[a],n):null}if("and"===p){for(a=0;a<u.length&&(i=e.apply(u[a],n),e.truthy(i));a+=1);return i}if("or"===p){for(a=0;a<u.length&&(i=e.apply(u[a],n),!e.truthy(i));a+=1);return i}if("filter"===p)return(o=e.apply(u[0],n),s=u[1],Array.isArray(o))?o.filter(function(r){return e.truthy(e.apply(s,r))}):[];if("map"===p)return(o=e.apply(u[0],n),s=u[1],Array.isArray(o))?o.map(function(r){return e.apply(s,r)}):[];else if("reduce"===p)return(o=e.apply(u[0],n),s=u[1],l=void 0!==u[2]?u[2]:null,Array.isArray(o))?o.reduce(function(r,t){return e.apply(s,{current:t,accumulator:r})},l):l;else if("all"===p){if(o=e.apply(u[0],n),s=u[1],!Array.isArray(o)||!o.length)return!1;for(a=0;a<o.length;a+=1)if(!e.truthy(e.apply(s,o[a])))return!1;return!0}else if("none"===p){if(o=e.apply(u[0],n),s=u[1],!Array.isArray(o)||!o.length)return!0;for(a=0;a<o.length;a+=1)if(e.truthy(e.apply(s,o[a])))return!1;return!0}else if("some"===p){if(o=e.apply(u[0],n),s=u[1],!Array.isArray(o)||!o.length)return!1;for(a=0;a<o.length;a+=1)if(e.truthy(e.apply(s,o[a])))return!0;return!1}if(u=u.map(function(r){return e.apply(r,n)}),r.hasOwnProperty(p)&&"function"==typeof r[p])return r[p].apply(n,u);if(p.indexOf(".")>0){var c=String(p).split("."),d=r;for(a=0;a<c.length;a++){if(!d.hasOwnProperty(c[a]))throw Error("Unrecognized operation "+p+" (failed at "+c.slice(0,a+1).join(".")+")");d=d[c[a]]}return d.apply(n,u)}throw Error("Unrecognized operation "+p)},e.uses_data=function(r){var t=[];if(e.is_logic(r)){var n=e.get_operator(r),a=r[n];Array.isArray(a)||(a=[a]),"var"===n?t.push(a[0]):a.forEach(function(r){t.push.apply(t,e.uses_data(r))})}for(var i=[],s=0,o=t.length;s<o;s++)-1===i.indexOf(t[s])&&i.push(t[s]);return i},e.add_operation=function(e,t){r[e]=t},e.rm_operation=function(e){delete r[e]},e.rule_like=function(r,t){if(t===r||"@"===t)return!0;if("number"===t)return"number"==typeof r;if("string"===t)return"string"==typeof r;if("array"===t)return Array.isArray(r)&&!e.is_logic(r);if(e.is_logic(t)){if(e.is_logic(r)){var n=e.get_operator(t),a=e.get_operator(r);if("@"===n||n===a)return e.rule_like(e.get_values(r,!1),e.get_values(t,!1))}return!1}if(Array.isArray(t)&&Array.isArray(r)){if(t.length!==r.length)return!1;for(var i=0;i<t.length;i+=1)if(!e.rule_like(r[i],t[i]))return!1;return!0}return!1},e})},986261,(e,r,t)=>{var n=e.r(781125);r.exports=function(e){return e&&e.length?n(e):[]}}]);
+
+//# debugId=0329bfd3-b24d-796f-1ea0-6c54ae1365c5
