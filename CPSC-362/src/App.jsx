@@ -2,7 +2,6 @@ import { useState } from "react";
 import "./App.css";
 
 export default function App() {
-<<<<<<< HEAD
 
   //when using <h1> it can be <h1> throiugh <h6>
   //these dont need quotations because ur using
@@ -11,8 +10,6 @@ export default function App() {
 
   //this is a const use state that can be either selected
   //or not selected, it is currently set to null
-=======
->>>>>>> a83e33b76b5c2bd9f88dc0657598abc46e103bff
   const [selectedRole, setSelectedRole] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +18,6 @@ export default function App() {
     <main>
       <h1>Sign in</h1>
 
-<<<<<<< HEAD
 
       {/*when patient button is clicked, role is changed to patient
       //the "=>" helps hand over the function when it is clicked 
@@ -32,13 +28,11 @@ export default function App() {
       <button 
         className={selectedRole === "patient" ? "role-btn active" : "role-btn"}
         onClick={() => setSelectedRole("patient")}
-=======
       <div>
         <button
           type="button"
           className={selectedRole === "patient" ? "role-btn active" : "role-btn"}
           onClick={() => setSelectedRole("patient")}
->>>>>>> a83e33b76b5c2bd9f88dc0657598abc46e103bff
         >
           Patient
         </button>
