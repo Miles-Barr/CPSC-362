@@ -17,6 +17,7 @@ export default function App() {
   //when using <h1> it can be <h1> throiugh <h6>
   //these dont need quotations because ur using
   //markup which javascript uses to like get html type stuff
+  
 
   //this is a const use state that can be either selected
   //or not selected, it is currently set to null
@@ -31,10 +32,12 @@ export default function App() {
     <div>
       <h1>Sign in</h1>
 
+
       {/*when patient button is clicked, role is changed to patient
       //the "=>" helps hand over the function when it is clicked 
       //it only stores the information and activates it when it's clicked*/}
       {/* className selectedRole checks when each role is active */}
+      
 
       <button 
         className={selectedRole === "patient" ? "role-btn active" : "role-btn"}
