@@ -25,11 +25,7 @@ export default function App() {
       {/* className selectedRole checks when each role is active */}
       <div>
 
-      <button
-          type="button"
-          className={selectedRole === "patient" ? "role-btn active" : "role-btn"}
-          onClick={() => setSelectedRole("patient")}
-        >
+      <button type="button" className={selectedRole === "patient" ? "role-btn active" : "role-btn"} onClick={() => setSelectedRole("patient")}>
           Patient
         </button>
 
