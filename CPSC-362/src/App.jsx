@@ -1,9 +1,12 @@
 
 
-import { useState } from "react"; //useState is what gives button functionality
+import { useState } from "react"; //useState remembers values accross rerenders, whatever that value might be, in this case a button indicates it but it doesn't have to be a button
 
 import "./App.css"; //this imports the css file
 
+//NOTES
+//JSX vs JS: 
+//    comment "{/**/}" and comment "//"
 
 
 //this is what main.jsx imports and renders, 
@@ -18,16 +21,25 @@ export default function App() {
   //this is a const use state that can be either selected
   //or not selected, it is currently set to null
   const [selectedRole, setSelectedRole] = useState(null);
-  return <h1>Sign in</h1>
+
+  //A component can only return one root element, so you can't
+  //put like return <h1>hi</h1> <button>yes</button> next to eachother
+  //thats what "div" does, or commonly does, kinda like brackets 
+  //keeping everything together
+      
+  return (
+    <div>
+      <h1>Sign in</h1>
+      {/*when patient button is clicked, role is changed to patient
+      //the "=>" helps hand over the function when it is clicked 
+      //it only stores the information and activates it when it's clicked*/}
+      <button onClick={() => setSelectedRole("patient")}>Patient</button>
+      <button onClick={() => setSelectedRole("doctor")}>Doctor</button>
+      <button onClick={() => setSelectedRole("staff")}>Staff</button>
+
+    </div>
+      
+  );
 }
 
-//creating a boolean that can be either doc patient staff or null
-role = "doctor" | "patient" | "staff" | null;
-
-onClick=>someStateSetter("patient") {
-  <button>patient</button>
-}
-
-//<button>patient</button>
-//<button>staff</button>
 
