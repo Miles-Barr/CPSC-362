@@ -1,0 +1,156 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.card {
+  width: min(100%, 420px);
+  padding: 32px;
+  border: 1px solid #d7dce2;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+}
+
+.card h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.subtitle,
+.eyebrow {
+  margin: 8px 0 24px;
+  color: #52606d;
+}
+
+.eyebrow {
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+form {
+  display: grid;
+  gap: 12px;
+  text-align: left;
+}
+
+fieldset {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+}
+
+legend,
+label {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.role-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+button,
+input {
+  min-height: 44px;
+  border: 1px solid #aeb7c2;
+  border-radius: 6px;
+  font: inherit;
+}
+
+input {
+  width: 100%;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #17202a;
+}
+
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.role-button {
+  background: #ffffff;
+  color: #243447;
+}
+
+.role-button.active {
+  border-color: #1769aa;
+  background: #eaf4fc;
+  color: #0d4f82;
+}
+
+.primary-button,
+.secondary-button {
+  margin-top: 8px;
+  background: #1769aa;
+  color: #ffffff;
+  border-color: #1769aa;
+}
+
+.secondary-button {
+  margin-top: 24px;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.error-message {
+  margin: 0;
+  color: #b42318;
+}
+
+.success-message {
+  margin: 0;
+  color: #067647;
+}
+
+.account-note,
+.field-help {
+  margin: 0;
+  color: #52606d;
+  font-size: 0.9rem;
+}
+
+.text-button {
+  min-height: auto;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: #0d4f82;
+  text-decoration: underline;
+}
+
+.template-note {
+  margin-top: 16px;
+  color: #52606d;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 24px;
+  }
+
+  .role-options {
+    grid-template-columns: 1fr;
+  }
+}
