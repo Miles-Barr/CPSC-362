@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-import { supabase } from "./supabaseClient.js";
+import { isSupabaseConfigured, supabase } from "./supabaseClient.js";
 
 export default function App() {
   const [profile, setProfile] = useState(null);
-  const [initializing, setInitializing] = useState(true);
+  const [initializing, setInitializing] = useState(isSupabaseConfigured);
 
   async function getProfile(userId) {
     const { data, error } = await supabase
@@ -23,6 +23,10 @@ export default function App() {
   }
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      return undefined;
+    }
+
     let isMounted = true;
 
     async function restoreSession() {
@@ -129,6 +133,20 @@ export default function App() {
     return (
       <main className="page" aria-live="polite">
         <p>Loading...</p>
+      </main>
+    );
+  }
+
+  if (!isSupabaseConfigured) {
+    return (
+      <main className="page">
+        <section className="card" role="alert">
+          <h1>Configuration required</h1>
+          <p className="template-note">
+            Supabase is not configured for this deployment. Add the Vite Supabase
+            environment variables and redeploy the site.
+          </p>
+        </section>
       </main>
     );
   }
