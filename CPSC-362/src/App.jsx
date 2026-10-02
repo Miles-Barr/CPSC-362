@@ -1,74 +1,141 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import DashboardPage from "./pages/DashboardPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import { supabase } from "./supabaseClient.js";
 
 export default function App() {
+  const [profile, setProfile] = useState(null);
+  const [initializing, setInitializing] = useState(true);
 
-  //when using <h1> it can be <h1> throiugh <h6>
-  //these dont need quotations because ur using
-  //markup which javascript uses to like get html type stuff
-  
+  async function getProfile(userId) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("username, role")
+      .eq("id", userId)
+      .single();
 
-  //this is a const use state that can be either selected
-  //or not selected, it is currently set to null
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+    if (error) {
+      throw error;
+    }
 
-  return (
-    <main>
-      <h1>Sign in</h1>
+    return data;
+  }
 
+  useEffect(() => {
+    let isMounted = true;
 
-      {/*when patient button is clicked, role is changed to patient
-      //the "=>" helps hand over the function when it is clicked 
-      //it only stores the information and activates it when it's clicked*/}
-      {/* className selectedRole checks when each role is active */}
-      <div>
+    async function restoreSession() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      <button
-          type="button"
-          className={selectedRole === "patient" ? "role-btn active" : "role-btn"}
-          onClick={() => setSelectedRole("patient")}
-        >
-          Patient
-        </button>
+      if (session) {
+        try {
+          const savedProfile = await getProfile(session.user.id);
 
-        <button
-          type="button"
-          className={selectedRole === "doctor" ? "role-btn active" : "role-btn"}
-          onClick={() => setSelectedRole("doctor")}
-        >
-          Doctor
-        </button>
+          if (isMounted) {
+            setProfile(savedProfile);
+          }
+        } catch {
+          await supabase.auth.signOut();
+        }
+      }
 
-        <button
-          type="button"
-          className={selectedRole === "staff" ? "role-btn active" : "role-btn"}
-          onClick={() => setSelectedRole("staff")}
-        >
-          Staff
-        </button>
-      </div>
+      if (isMounted) {
+        setInitializing(false);
+      }
+    }
 
-      <p>Selected role: {selectedRole || "None"}</p>
+    restoreSession();
 
-      <label>
-        Email
-        <input
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </label>
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT" && isMounted) {
+        setProfile(null);
+      }
+    });
 
-      <label>
-        Password
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
-    </main>
-  );
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  async function handleLogin({ email, password, selectedRole }) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      throw new Error("Invalid email or password.");
+    }
+
+    try {
+      const signedInProfile = await getProfile(data.user.id);
+
+      if (signedInProfile.role !== selectedRole) {
+        await supabase.auth.signOut();
+        throw new Error("This account does not match the selected role.");
+      }
+
+      setProfile(signedInProfile);
+    } catch (profileError) {
+      await supabase.auth.signOut();
+
+      if (profileError.message === "This account does not match the selected role.") {
+        throw profileError;
+      }
+
+      throw new Error("This account does not have a valid profile.", {
+        cause: profileError,
+      });
+    }
+  }
+
+  async function handleSignUp({ username, email, password }) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { username },
+        emailRedirectTo: window.location.origin,
+      },
+    });
+
+    if (error) {
+      throw new Error("Unable to create the account. Check your information and try again.", {
+        cause: error,
+      });
+    }
+
+    if (data.session) {
+      const newProfile = await getProfile(data.user.id);
+      setProfile(newProfile);
+      return { requiresEmailConfirmation: false };
+    }
+
+    return { requiresEmailConfirmation: true };
+  }
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    setProfile(null);
+  }
+
+  if (initializing) {
+    return (
+      <main className="page" aria-live="polite">
+        <p>Loading...</p>
+      </main>
+    );
+  }
+
+  if (profile) {
+    return <DashboardPage profile={profile} onLogout={handleLogout} />;
+  }
+
+  return <LoginPage onLogin={handleLogin} onSignUp={handleSignUp} />;
 }
