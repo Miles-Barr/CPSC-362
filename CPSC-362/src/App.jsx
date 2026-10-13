@@ -24,7 +24,6 @@ export default function App() {
       //it only stores the information and activates it when it's clicked*/}
       {/* className selectedRole checks when each role is active */}
       <div>
-        <h1>Test</h1>
 
       <button type="button" className={selectedRole === "patient" ? "role-btn active" : "role-btn"} onClick={() => setSelectedRole("patient")}>
           Patient
@@ -66,7 +65,6 @@ export default function App() {
           onChange={(event) => setPassword(event.target.value)}
         />
       </label>
-
     </main>
   );
 }
