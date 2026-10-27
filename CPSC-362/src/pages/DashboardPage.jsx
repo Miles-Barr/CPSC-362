@@ -1,4 +1,8 @@
+import DoctorPage from "./DoctorPage.jsx";
 export default function DashboardPage({ profile, onLogout }) {
+    if (profile.role === "doctor") {
+    return <DoctorPage profile={profile} onLogout={onLogout} />;
+  }
   const roleName = profile.role[0].toUpperCase() + profile.role.slice(1);
 
   return (
