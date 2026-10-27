@@ -4,10 +4,15 @@ import DashboardPage from "./pages/DashboardPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import { isSupabaseConfigured, supabase } from "./supabaseClient.js";
 
+// App is the authentication controller. It talks to Supabase and decides
+// whether the user should see the login page or the authenticated dashboard.
 export default function App() {
+  // A null profile means there is no authenticated application user yet.
   const [profile, setProfile] = useState(null);
   const [initializing, setInitializing] = useState(isSupabaseConfigured);
 
+  // Passwords stay in Supabase Auth. Our public profiles table only contains
+  // application data such as the username and trusted account role.
   async function getProfile(userId) {
     const { data, error } = await supabase
       .from("profiles")
@@ -29,6 +34,8 @@ export default function App() {
 
     let isMounted = true;
 
+    // Supabase stores the session in the browser. Restore it after a refresh
+    // so a signed-in user does not have to log in again on every page load.
     async function restoreSession() {
       const {
         data: { session },
@@ -53,6 +60,7 @@ export default function App() {
 
     restoreSession();
 
+    // Keep the UI synchronized when Supabase reports that the user signed out.
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
@@ -61,6 +69,7 @@ export default function App() {
       }
     });
 
+    // Remove the listener when App unmounts to prevent memory leaks.
     return () => {
       isMounted = false;
       subscription.unsubscribe();
@@ -68,6 +77,7 @@ export default function App() {
   }, []);
 
   async function handleLogin({ email, password, selectedRole }) {
+    // Supabase Auth validates the credentials and returns the authenticated ID.
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -80,6 +90,8 @@ export default function App() {
     try {
       const signedInProfile = await getProfile(data.user.id);
 
+      // The role button is only a login choice. Authorization uses the role
+      // stored in the database, so selecting Doctor cannot grant doctor access.
       if (signedInProfile.role !== selectedRole) {
         await supabase.auth.signOut();
         throw new Error("This account does not match the selected role.");
@@ -100,6 +112,8 @@ export default function App() {
   }
 
   async function handleSignUp({ username, email, password }) {
+    // The username becomes Auth metadata. A database trigger copies it into
+    // public.profiles, where the new account receives the default patient role.
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -129,6 +143,8 @@ export default function App() {
     setProfile(null);
   }
 
+  // Conditional rendering keeps authentication state in one place while the
+  // page components remain focused on displaying their own UI.
   if (initializing) {
     return (
       <main className="page" aria-live="polite">

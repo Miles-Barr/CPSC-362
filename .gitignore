@@ -1,0 +1,4 @@
+# C++ build output and server-only secrets
+backend/build/
+backend/.env
+
