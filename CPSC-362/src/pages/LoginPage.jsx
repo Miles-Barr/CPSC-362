@@ -1,7 +1,10 @@
 import { useState } from "react";
 
+// These are login choices only. App verifies the choice against the database.
 const roles = ["patient", "doctor", "staff"];
 
+// LoginPage owns form state and delegates authentication work to App through
+// the onLogin and onSignUp function props.
 export default function LoginPage({ onLogin, onSignUp }) {
   const [mode, setMode] = useState("login");
   const [selectedRole, setSelectedRole] = useState("patient");
@@ -22,12 +25,14 @@ export default function LoginPage({ onLogin, onSignUp }) {
   }
 
   async function handleSubmit(event) {
+    // React handles the submission, so prevent the browser's normal page reload.
     event.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
     setSubmitting(true);
 
     try {
+      // The same form supports two modes while App owns the Supabase calls.
       if (creatingAccount) {
         const result = await onSignUp({ username, email, password });
 

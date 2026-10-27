@@ -1,4 +1,17 @@
+import DoctorDashboardPage from "./DoctorDashboardPage.jsx";
+import PatientDashboardPage from "./PatientDashboardPage.jsx";
+
+// DashboardPage is a presentational component. It receives already-validated
+// profile data and a logout function instead of calling Supabase directly.
 export default function DashboardPage({ profile, onLogout }) {
+  if (profile.role === "patient") {
+    return <PatientDashboardPage profile={profile} onLogout={onLogout} />;
+  }
+
+  if (profile.role === "doctor") {
+    return <DoctorDashboardPage profile={profile} onLogout={onLogout} />;
+  }
+
   const roleName = profile.role[0].toUpperCase() + profile.role.slice(1);
 
   return (
