@@ -4,9 +4,9 @@ We are creating a website for hospital use, including functional pages for patie
 
 Table of Contents
 ------
-[Jump to Usage](#Usage)
+[Jump to Usage](#usage)
 
-#Usage
+## Usage
 Project description: What it does, who it is for, and what problem it solves
 Our TuffyHealth website is for all people relating to the hospital like patients, doctors, and staff. It allows patients to schedule reservations, view their patient health data, prescriptions, and even what the closest hospital is to them. It will allow doctors to view all their patients and their corresponding profiles, including all doctor visits, visit summaries, medications prescribed, and allows the doctor to prescribe medication. For the rest of the TuffyHealth staff, they can see their schedule and where they will be working for that shift.
   
