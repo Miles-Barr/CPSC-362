@@ -3,8 +3,11 @@
 We are creating a website for hospital use, including functional pages for patients, doctors, and staff, allowing them to do a variety of things.
 
 Table of Contents
-------
-[Jump to Usage](#usage)
+1) Usage
+2) Tech Stack
+3) Features
+4) Directory Structure
+5) Tree 
 
 ## Usage
 Project description: What it does, who it is for, and what problem it solves
@@ -14,8 +17,10 @@ Tech stack:the languages, frameworks, databases, and major libraries used in the
 TuffyHealth utilizes SupaBase, React, and Vite.
 
 Features- A list of the project's main features
+Allows doctors to create and update prescriptions. Functional login page. 
 
 Directory structure- visual diagram of the folder structure (and what each folder contains)
 
 Tree - Visualization of File Structure
+
 
