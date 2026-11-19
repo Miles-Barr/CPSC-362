@@ -85,7 +85,9 @@ std::string PatientService::requireRole(DatabaseConnection& connection,
                                         const std::string& profileId,
                                         const std::string& expectedRole) {
   const PgResult profile = connection.query(
-      "select role from public.profiles where id = $1::uuid", {profileId});
+      "select role from public.profiles "
+      "where id = $1::uuid and active = true",
+      {profileId});
   if (profile.rows() == 0 || profile.value(0, "role") != expectedRole) {
     throw ApiError(403, "This account is not authorized for that operation.");
   }

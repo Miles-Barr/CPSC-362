@@ -33,6 +33,7 @@ add_executable(
   src/Config.cpp
   src/Database.cpp
   src/PatientService.cpp
+  src/StaffService.cpp
 )
 
 target_include_directories(fullerton-health-api PRIVATE include)

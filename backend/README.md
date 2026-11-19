@@ -3,7 +3,7 @@
 This service is the authorization and business-logic boundary between the React
 frontend and Supabase PostgreSQL. It verifies each Supabase access token, checks
 the stored application role and doctor/patient assignment, uses parameterized
-SQL, and records prescription changes in `audit_logs`.
+SQL, and records prescription and staff-administration changes in `audit_logs`.
 
 ## Classes
 
@@ -11,6 +11,7 @@ SQL, and records prescription changes in `audit_logs`.
 - `AuthService` asks Supabase Auth to validate the browser's bearer token.
 - `Database` and `DatabaseConnection` own PostgreSQL connections and results.
 - `PatientService` enforces roles and assignments before reading or writing data.
+- `StaffService` manages users and doctor/patient assignments with audit logs.
 - `main.cpp` maps HTTP routes to those service functions.
 
 The service opens one encrypted PostgreSQL connection per request. That is easy
@@ -27,6 +28,10 @@ a connection pool.
 | `GET` | `/api/doctor/patients/:id/dashboard` | Assigned doctor |
 | `POST` | `/api/doctor/patients/:id/prescriptions` | Assigned doctor |
 | `PATCH` | `/api/doctor/patients/:id/prescriptions/:id` | Assigned doctor |
+| `GET` | `/api/staff/dashboard` | Active staff account |
+| `PATCH` | `/api/staff/patients/:id/assignment` | Active staff account |
+| `PATCH` | `/api/staff/users/:id/role` | Active staff account |
+| `PATCH` | `/api/staff/users/:id/status` | Active staff account |
 
 ## Run with Docker
 

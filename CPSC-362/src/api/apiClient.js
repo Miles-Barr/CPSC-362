@@ -69,3 +69,28 @@ export function updatePrescription(patientId, prescriptionId, changes) {
   );
 }
 
+export function getStaffDashboard() {
+  return apiRequest("/api/staff/dashboard");
+}
+
+export function updatePatientAssignment(patientId, doctorId) {
+  return apiRequest(`/api/staff/patients/${patientId}/assignment`, {
+    method: "PATCH",
+    body: JSON.stringify({ doctorId }),
+  });
+}
+
+export function updateStaffUserRole(profileId, role) {
+  return apiRequest(`/api/staff/users/${profileId}/role`, {
+    method: "PATCH",
+    body: JSON.stringify({ role }),
+  });
+}
+
+export function updateStaffUserStatus(profileId, active) {
+  return apiRequest(`/api/staff/users/${profileId}/status`, {
+    method: "PATCH",
+    body: JSON.stringify({ active }),
+  });
+}
+

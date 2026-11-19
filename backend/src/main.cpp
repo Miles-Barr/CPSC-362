@@ -3,6 +3,7 @@
 #include "Config.hpp"
 #include "Database.hpp"
 #include "PatientService.hpp"
+#include "StaffService.hpp"
 
 #include <httplib.h>
 #include <nlohmann/json.hpp>
@@ -74,6 +75,7 @@ int main() {
     const Database database(config.databaseUrl);
     const AuthService auth(config.supabaseUrl, config.supabasePublishableKey);
     const PatientService patients(database);
+    const StaffService staff(database);
     httplib::Server server;
 
     server.Options(R"(/.*)", [&](const httplib::Request& request,
@@ -140,6 +142,51 @@ int main() {
               [&](const AuthenticatedUser& user) {
                 return patients.updatePrescription(
                     user.id, patientId, prescriptionId, parseBody(request));
+              });
+        });
+
+    server.Get("/api/staff/dashboard",
+               [&](const httplib::Request& request, httplib::Response& response) {
+      authenticatedRequest(
+          request, response, config, auth,
+          [&](const AuthenticatedUser& user) {
+            return staff.dashboard(user.id);
+          });
+    });
+
+    server.Patch(
+        R"(/api/staff/patients/([0-9a-fA-F-]+)/assignment)",
+        [&](const httplib::Request& request, httplib::Response& response) {
+          const std::string patientId = request.matches[1];
+          authenticatedRequest(
+              request, response, config, auth,
+              [&](const AuthenticatedUser& user) {
+                return staff.updatePatientAssignment(user.id, patientId,
+                                                     parseBody(request));
+              });
+        });
+
+    server.Patch(
+        R"(/api/staff/users/([0-9a-fA-F-]+)/role)",
+        [&](const httplib::Request& request, httplib::Response& response) {
+          const std::string profileId = request.matches[1];
+          authenticatedRequest(
+              request, response, config, auth,
+              [&](const AuthenticatedUser& user) {
+                return staff.updateUserRole(user.id, profileId,
+                                            parseBody(request));
+              });
+        });
+
+    server.Patch(
+        R"(/api/staff/users/([0-9a-fA-F-]+)/status)",
+        [&](const httplib::Request& request, httplib::Response& response) {
+          const std::string profileId = request.matches[1];
+          authenticatedRequest(
+              request, response, config, auth,
+              [&](const AuthenticatedUser& user) {
+                return staff.updateUserStatus(user.id, profileId,
+                                              parseBody(request));
               });
         });
 

@@ -16,7 +16,7 @@ export default function App() {
   async function getProfile(userId) {
     const { data, error } = await supabase
       .from("profiles")
-      .select("username, role")
+      .select("username, role, active")
       .eq("id", userId)
       .single();
 
@@ -24,7 +24,11 @@ export default function App() {
       throw error;
     }
 
-    return data;
+    if (!data.active) {
+      throw new Error("This account has been deactivated.");
+    }
+
+    return { id: userId, ...data };
   }
 
   useEffect(() => {
@@ -102,6 +106,10 @@ export default function App() {
       await supabase.auth.signOut();
 
       if (profileError.message === "This account does not match the selected role.") {
+        throw profileError;
+      }
+
+      if (profileError.message === "This account has been deactivated.") {
         throw profileError;
       }
 
