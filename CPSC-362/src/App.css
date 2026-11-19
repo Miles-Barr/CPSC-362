@@ -60,14 +60,16 @@ label {
 }
 
 button,
-input {
+input,
+select {
   min-height: 44px;
   border: 1px solid #aeb7c2;
   border-radius: 6px;
   font: inherit;
 }
 
-input {
+input,
+select {
   width: 100%;
   padding: 8px 10px;
   box-sizing: border-box;
@@ -81,7 +83,8 @@ button {
 }
 
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+select:focus-visible {
   outline: 3px solid #93c5fd;
   outline-offset: 2px;
 }
@@ -721,6 +724,187 @@ button:disabled {
   align-self: end;
 }
 
+/* Staff dashboard */
+.staff-portal {
+  --portal-blue: #315f78;
+  --portal-teal: #476d82;
+  --portal-mint: #edf4f7;
+}
+
+.staff-summary .summary-card strong {
+  font-size: 2rem;
+}
+
+.staff-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.staff-action-card,
+.staff-doctor-card {
+  min-width: 0;
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  border: 1px solid var(--portal-border);
+  border-radius: 11px;
+  background: #fbfdfd;
+}
+
+.staff-action-card > div,
+.staff-action-card label,
+.staff-doctor-card > div {
+  display: grid;
+  gap: 5px;
+}
+
+.staff-action-card small,
+.staff-doctor-card small,
+.staff-doctor-card p,
+.staff-table small,
+.muted-text {
+  color: var(--portal-muted);
+}
+
+.staff-action-card .primary-button {
+  margin: 0;
+}
+
+.staff-doctor-card > div {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.staff-doctor-card p {
+  margin: 0;
+}
+
+.staff-toolbar {
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: minmax(220px, 2fr) minmax(160px, 1fr);
+  gap: 14px;
+}
+
+.staff-toolbar label {
+  display: grid;
+  gap: 6px;
+}
+
+.staff-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.staff-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.staff-table th,
+.staff-table td {
+  padding: 13px 12px;
+  border-bottom: 1px solid var(--portal-border);
+  vertical-align: middle;
+}
+
+.staff-table th {
+  color: var(--portal-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.staff-table td:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.staff-table select {
+  min-width: 170px;
+}
+
+.compact-button,
+.compact-danger-button {
+  min-height: 36px;
+  padding: 6px 10px;
+  background: #ffffff;
+}
+
+.compact-button {
+  border-color: var(--portal-blue);
+  color: var(--portal-blue);
+}
+
+.compact-danger-button {
+  border-color: #d98982;
+  color: #a52a22;
+}
+
+.role-chip,
+.account-status {
+  display: inline-flex;
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.role-chip {
+  background: #eaf1f5;
+  color: #315f78;
+}
+
+.account-status.active {
+  background: #dff3ec;
+  color: #12645e;
+}
+
+.account-status.inactive {
+  background: #fbe7e5;
+  color: #9a2c24;
+}
+
+.audit-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  list-style: none;
+}
+
+.audit-list li {
+  padding: 15px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  border-bottom: 1px solid var(--portal-border);
+}
+
+.audit-list li:last-child {
+  border-bottom: 0;
+}
+
+.audit-list div {
+  display: grid;
+  gap: 4px;
+}
+
+.audit-list span,
+.audit-list p {
+  color: var(--portal-muted);
+  font-size: 0.84rem;
+}
+
+.audit-list p {
+  margin: 0;
+  white-space: nowrap;
+}
+
 @media (max-width: 980px) {
   .patient-portal {
     grid-template-columns: 1fr;
@@ -773,7 +957,12 @@ button:disabled {
   .dashboard-summary,
   .dashboard-two-column,
   .patient-selector,
-  .doctor-record-grid {
+  .doctor-record-grid,
+  .staff-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .staff-toolbar {
     grid-template-columns: 1fr;
   }
 
@@ -831,5 +1020,14 @@ button:disabled {
   .health-summary-list div {
     grid-template-columns: 1fr;
     gap: 3px;
+  }
+
+  .audit-list li {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .audit-list p {
+    white-space: normal;
   }
 }

@@ -82,11 +82,19 @@ export default function DoctorDashboardPage({ profile, onLogout }) {
   }, [selectedPatientId, reloadKey]);
 
   function selectPatient(patientId) {
-    setSelectedPatientId(patientId);
     setDashboard(null);
     setLoadingDashboard(true);
     setError("");
     setActionMessage("");
+
+    // The first patient is selected automatically. If that same patient is
+    // clicked again, its ID does not change, so force the loading effect to
+    // rerun instead of leaving the dashboard on its loading state.
+    if (patientId === selectedPatientId) {
+      setReloadKey((current) => current + 1);
+    } else {
+      setSelectedPatientId(patientId);
+    }
   }
 
   function updateForm(event) {
