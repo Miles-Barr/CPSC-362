@@ -88,10 +88,10 @@ export default function PatientDashboardPage({ profile, onLogout }) {
   return (
     <div className="patient-portal">
       <aside className="portal-sidebar">
-        <a className="portal-brand" href="#overview" aria-label="Fullerton Health Network home">
+        <a className="portal-brand" href="#overview" aria-label="TuffyHealth Network home">
           <span className="brand-mark" aria-hidden="true">+</span>
           <span>
-            <strong>Fullerton Health</strong>
+            <strong>TuffyHealth</strong>
             <small>Patient portal</small>
           </span>
         </a>

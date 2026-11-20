@@ -54,7 +54,7 @@ export default function LoginPage({ onLogin, onSignUp }) {
     <main className="page">
       <section className="card" aria-labelledby="login-title">
         <h1 id="login-title">{creatingAccount ? "Create account" : "Sign in"}</h1>
-        <p className="subtitle">Fullerton Health Network</p>
+        <p className="subtitle">TuffyHealth Network</p>
 
         <form onSubmit={handleSubmit}>
           {creatingAccount ? (

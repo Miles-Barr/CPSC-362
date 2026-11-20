@@ -137,10 +137,10 @@ export default function DoctorDashboardPage({ profile, onLogout }) {
   return (
     <div className="patient-portal doctor-portal">
       <aside className="portal-sidebar">
-        <a className="portal-brand" href="#patients" aria-label="Fullerton Health Network home">
+        <a className="portal-brand" href="#patients" aria-label="TuffyHealth Network home">
           <span className="brand-mark" aria-hidden="true">+</span>
           <span>
-            <strong>Fullerton Health</strong>
+            <strong>TuffyHealth</strong>
             <small>Clinical portal</small>
           </span>
         </a>
